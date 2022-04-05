@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.selectTournamentPageCLass {
+    @apply h-screen w-screen bg-select_tournament_page bg-cover bg-no-repeat bg-center flex flex-col px-32 py-14;
+}
+
+.newTournamentPageClass {
+    @apply h-screen w-screen bg-new_tournament_page bg-cover bg-no-repeat bg-center flex flex-col px-32 py-14;
+}
+
+.pointsTablePageClass {
+    @apply h-screen w-screen bg-table_fixture_page bg-cover bg-no-repeat bg-center flex flex-col px-32 py-14;
+}
+
+.fixturesPageClass {
+    @apply h-screen w-screen bg-table_fixture_page bg-cover bg-no-repeat bg-center flex flex-col px-32 py-14;
+}
