@@ -1,12 +1,15 @@
 import React, { useRef } from 'react'
+import { useSelector } from 'react-redux';
 import ContentBox from '../UI/ContentBox';
 
 const AddNewTournamentNameBox = (props) => {
+    const selectedTeams = useSelector(state => state.newTournament.selectedTeams);
+
     const inputRef = useRef('');
     const formSubmitHandler = function (e) {
         e.preventDefault();
         console.log(inputRef.current.value);
-        console.log(props.selectedTeamsSet);
+        console.log(selectedTeams);
     }
 
     return (

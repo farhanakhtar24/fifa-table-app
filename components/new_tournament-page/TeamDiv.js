@@ -1,21 +1,27 @@
 import React, { useState } from 'react'
 import Image from 'next/image';
+import { useSelector, useDispatch } from 'react-redux'
+import { addTeam, removeTeam, setCurrentlySelected, hideCurrentlySelected } from '../../redux/newTournamentSlice';
 
 const TeamDiv = (props) => {
+    const dispatch = useDispatch();
+
     const [isSelected, setIsSelected] = useState(false);
 
     const handleSelectionClick = () => {
-        setIsSelected(!isSelected);
         if (isSelected !== true) {
-            props.onAddTeam(props.teamData);
+            dispatch(addTeam(props.teamData));
+            dispatch(setCurrentlySelected(props.teamData));
         } else if (isSelected === true) {
-            props.onRemoveTeam(props.teamData);
+            dispatch(removeTeam(props.teamData));
+            dispatch(hideCurrentlySelected());
         }
+        setIsSelected(!isSelected);
     }
 
     return (
         <div className={ `w-full h-full p-2 rounded flex flex-col justify-center items-center cursor-pointer
-        ${isSelected ? 'border-2 border-primary_dark_blue bg-slate-500/40' : 'bg-slate-50/40'}` }
+            ${isSelected ? 'border-2 border-primary_dark_blue bg-slate-500/40' : 'bg-input_background'}` }
             onClick={ handleSelectionClick }>
             <Image src={ props.teamData.url } width={ 400 } height={ 400 } />
         </div>

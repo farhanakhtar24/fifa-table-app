@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import ContentBox from '../UI/ContentBox';
 
 const TeamStatsBox = (props) => {
-    const ATT = props.currentlySelected.stats.ATT;
-    const MID = props.currentlySelected.stats.MID;
-    const DEF = props.currentlySelected.stats.DEF;
-    const imgSrc = props.currentlySelected.url;
+    const currentlySelectedTeam = useSelector(state => state.newTournament.currentlySelectedTeam)
+    const ATT = currentlySelectedTeam.stats.ATT;
+    const MID = currentlySelectedTeam.stats.MID;
+    const DEF = currentlySelectedTeam.stats.DEF;
+    const imgSrc = currentlySelectedTeam.url;
 
     return (
         <ContentBox heading={ 'Team Stats' } headingStyle={ 'text-xl font-medium' } styles={ 'rounded-lg' }>
