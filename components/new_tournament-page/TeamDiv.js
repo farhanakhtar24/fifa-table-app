@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux'
-import { addTeam, removeTeam, setCurrentlySelected, hideCurrentlySelected } from '../../redux/newTournamentSlice';
+import { addTeam, removeTeam, setCurrentlySelected, resetCurrentlySelected } from '../../redux/newTournamentSlice';
 
 const TeamDiv = (props) => {
     const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const TeamDiv = (props) => {
             dispatch(setCurrentlySelected(props.teamData));
         } else if (isSelected === true) {
             dispatch(removeTeam(props.teamData));
-            dispatch(hideCurrentlySelected());
+            dispatch(resetCurrentlySelected());
         }
         setIsSelected(!isSelected);
     }

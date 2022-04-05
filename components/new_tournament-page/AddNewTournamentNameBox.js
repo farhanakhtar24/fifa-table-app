@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import ContentBox from '../UI/ContentBox';
 
@@ -8,8 +8,16 @@ const AddNewTournamentNameBox = (props) => {
     const inputRef = useRef('');
     const formSubmitHandler = function (e) {
         e.preventDefault();
-        console.log(inputRef.current.value);
-        console.log(selectedTeams);
+        if (inputRef.current.value.length > 0 && selectedTeams.length >= 2) {
+            console.log(inputRef.current.value);
+            console.log(selectedTeams);
+        } else if (inputRef.current.value.length === 0 && selectedTeams.length < 2) {
+            alert('Please select at least two teams & add a tournament name !!');
+        } else if (inputRef.current.value.length === 0) {
+            alert('Please enter a tournament name !!');
+        } else if (selectedTeams.length < 2) {
+            alert('Please select at least two teams !!');
+        }
     }
 
     return (

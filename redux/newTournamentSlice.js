@@ -28,7 +28,7 @@ const newTournamentSlice = createSlice({
         setCurrentlySelected: (state, action) => {
             state.currentlySelectedTeam = action.payload;
         },
-        hideCurrentlySelected: (state) => {
+        resetCurrentlySelected: (state) => {
             state.currentlySelectedTeam = {
                 id: '',
                 name: '',
@@ -44,6 +44,6 @@ const newTournamentSlice = createSlice({
     }
 })
 
-export const { addTeam, removeTeam, setCurrentlySelected, hideCurrentlySelected } = newTournamentSlice.actions;
+export const { addTeam, removeTeam, setCurrentlySelected, resetCurrentlySelected } = newTournamentSlice.actions;
 
 export default newTournamentSlice;
