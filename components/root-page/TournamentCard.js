@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { ImBin } from 'react-icons/im';
 
@@ -11,8 +11,10 @@ const TournamentCard = ({ tournamentDetails }) => {
             <a>
                 <div className='p-10 flex flex-col justify-between items-center gap-5 border-4 text-white
                 border-primary_dark_blue bg-primary_dark_blue rounded-2xl h-full w-full text-2xl font-semibold '>
-                    <div className='uppercase'>
-                        { tournamentName }
+                    <div className='uppercase w-full text-center'>
+                        <div className='truncate'>
+                            { tournamentName }
+                        </div>
                     </div>
                     <div className='w-full h-full grid grid-cols-2 grid-rows-3 gap-x-3 items-center'>
                         { imgUrls.slice(0, 5).map((imgUrl) => {
