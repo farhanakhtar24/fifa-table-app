@@ -15,6 +15,7 @@ module.exports = {
         'primary_dark_blue': '#061246',
         'active_button_blue': '#D6DCF1',
         'input_background': '#D6DCF1',
+        'tournament_card_imgs_bg': '#D6DCF1',
       }
     },
   },
