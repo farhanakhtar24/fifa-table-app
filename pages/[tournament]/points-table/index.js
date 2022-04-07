@@ -21,7 +21,7 @@ const index = () => {
                     Fixtures
                 </InactiveButton>
             </div>
-            <PointsTable tournamentName={ tournament } />
+            <PointsTable />
         </div >
     )
 }

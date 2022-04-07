@@ -21,8 +21,6 @@ const handler = async function (req, res) {
         const collection2 = db.collection('tournamentNames');
         const result2 = await collection2.insertOne({ imgUrls: teamImgUrls, name: tournamentName });
 
-        console.log(result1, result2);
-
         client.close();
 
         res.status(201).json({ message: 'Tournament added successfully' });
