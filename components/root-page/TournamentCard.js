@@ -1,16 +1,35 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import Image from 'next/image';
 import { ImBin } from 'react-icons/im';
+import { useRouter } from 'next/router';
+
 
 const TournamentCard = ({ tournamentDetails }) => {
+    const router = useRouter();
     const { name: tournamentName, imgUrls } = tournamentDetails;
 
+    const deleteTournamentHandler = async function () {
+        const ans = confirm('Are you sure you want to delete this tournament?');
+        if (ans) {
+            const response = await fetch('/api/delete-tournament', {
+                method: 'POST',
+                body: JSON.stringify(tournamentName),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const responseData = await response.json();
+            router.reload(window.location.pathname);
+        }
+    }
+
     return (
-        <Link href={ `${tournamentName}/points-table` }>
-            <a>
-                <div className='p-10 flex flex-col justify-between items-center gap-5 border-4 text-white
-                border-primary_dark_blue bg-primary_dark_blue rounded-2xl h-full w-full text-2xl font-semibold '>
+        <div className='w-full h-full flex flex-col items-center pb-10 border-4 text-white
+                border-primary_dark_blue bg-primary_dark_blue rounded-2xl gap-5'>
+            <Link href={ `${tournamentName}/points-table` }>
+                <a className='px-10 pt-10 flex flex-col justify-between items-center gap-5 h-full w-full 
+                text-2xl font-semibold'>
                     <div className='uppercase w-full text-center'>
                         <div className='truncate'>
                             { tournamentName }
@@ -29,12 +48,12 @@ const TournamentCard = ({ tournamentDetails }) => {
                             </div>
                         }
                     </div>
-                    <div className='text-xl'>
-                        <ImBin />
-                    </div>
-                </div>
-            </a>
-        </Link>
+                </a>
+            </Link>
+            <button className='text-xl text-white' onClick={ deleteTournamentHandler }>
+                <ImBin className='hover:text-red-500 transition-all' />
+            </button>
+        </div>
     )
 }
 

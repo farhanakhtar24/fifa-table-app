@@ -17,7 +17,6 @@ const TournamentsBox = () => {
         const tournamentDetailsFetcher = async function () {
             const response = await fetch('/api/fetch-tournamentCards');
             const responseData = await response.json();
-            console.log(responseData);
             setTournamentsArray(responseData);
         }
         tournamentDetailsFetcher();
