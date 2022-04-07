@@ -5,7 +5,6 @@ import TeamStatsBox from '../../components/new_tournament-page/TeamStatsBox';
 
 
 const index = () => {
-
     return (
         <div className='newTournamentPageClass'>
             <div className='w-full h-full grid grid-cols-10 gap-5'>
@@ -22,12 +21,3 @@ const index = () => {
 }
 
 export default index;
-
-{/* <div className='w-full h-full grid grid-cols-10 gap-3'>
-    <div className='col-span-3'>
-        <AddTournamentNameDiv teams={ teams } />
-    </div>
-    <div className='col-span-7'>
-        <SelectTeams teams={ teams } />
-    </div>
-</div> */}

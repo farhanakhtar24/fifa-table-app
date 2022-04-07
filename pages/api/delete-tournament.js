@@ -10,11 +10,13 @@ const handler = async function (req, res) {
 
         const db = client.db();
 
-        const collection = db.collection('tournamentNames');
+        const collection1 = db.collection('tournamentNames');
+        const result = await collection1.deleteOne({ name: tournamentName });
 
-        const result = await collection.deleteOne({ name: tournamentName });
+        const collection2 = db.collection(tournamentName);
+        const result2 = await collection2.drop();
 
-        console.log(result);
+        console.log(result, result2);
 
         client.close();
 
