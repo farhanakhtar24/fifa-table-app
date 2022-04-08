@@ -2,6 +2,7 @@
 
 const useDBstructuring = (selectedTeams) => {
     const fixtures = [];
+    const fixturesPlayed = [];
     const pointsTable = [];
 
     selectedTeams.forEach(team => {
@@ -28,7 +29,7 @@ const useDBstructuring = (selectedTeams) => {
         }
     }
 
-    return { fixtures, pointsTable };
+    return { fixtures, pointsTable, fixturesPlayed };
 }
 
 export default useDBstructuring;

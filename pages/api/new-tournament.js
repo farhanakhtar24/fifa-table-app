@@ -6,7 +6,7 @@ import useDBstructuring from '../../hooks/use-DB-structuring';
 const handler = async function (req, res) {
     if (req.method === 'POST') {
         const { selectedTeams, tournamentName } = req.body;
-        const { fixtures, pointsTable } = useDBstructuring(selectedTeams);
+        const { fixtures, pointsTable, fixturesPlayed } = useDBstructuring(selectedTeams);
         const teamImgUrls = selectedTeams.map(team => team.url);
 
         const client = await MongoClient.connect('mongodb+srv://developer-farhan:farhan779@cluster0.83q8h.mongodb.net/tournaments?retryWrites=true&w=majority')
@@ -15,7 +15,12 @@ const handler = async function (req, res) {
 
         // adding tourament teams and their respective fixtures alongside the points table
         const collection = db.collection(tournamentName);
-        const result1 = await collection.insertMany([{ selectedTeams }, { fixtures }, { pointsTable }]);
+        const result1 = await collection.insertMany([
+            { selectedTeams, name: 'selectedTeams' },
+            { fixtures, name: 'fixtures' },
+            { pointsTable, name: 'pointsTable' },
+            { fixturesPlayed, name: 'fixturesPlayed' }]
+        );
 
         // adding tourament name with img url to show on the slect tournament box
         const collection2 = db.collection('tournamentNames');

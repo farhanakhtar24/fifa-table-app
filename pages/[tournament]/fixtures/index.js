@@ -2,6 +2,7 @@ import React from 'react'
 import ActiveButton from '../../../components/UI/ActiveButton';
 import InactiveButton from '../../../components/UI/InactiveButton';
 import { useRouter } from 'next/router';
+import FixturesTable from '../../../components/fixtures-page/FixturesTable';
 
 
 const index = () => {
@@ -21,6 +22,7 @@ const index = () => {
                     Fixtures
                 </ActiveButton>
             </div>
+            <FixturesTable />
         </div>
     )
 }

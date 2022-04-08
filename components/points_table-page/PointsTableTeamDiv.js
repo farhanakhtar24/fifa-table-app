@@ -12,7 +12,9 @@ const PointsTableTeamDiv = (props) => {
                 <div className='grid grid-cols-2 justify-items-center px-2 items-center'>
                     <div>{ props.rank }</div>
                     { props.logo.length > 0 &&
-                        <Image src={ props.logo } width={ 75 } height={ 75 } />
+                        <div className='w-16 h-16'>
+                            <Image src={ props.logo } width={ 400 } height={ 400 } />
+                        </div>
                     }
                 </div>
                 <div className='flex-grow flex justify-start'>{ props.name }</div>

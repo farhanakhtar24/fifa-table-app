@@ -17,3 +17,12 @@
 .fixturesPageClass {
     @apply h-screen w-screen bg-table_fixture_page bg-cover bg-no-repeat bg-center flex flex-col px-32 py-14;
 }
+
+@layer utilities {
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}

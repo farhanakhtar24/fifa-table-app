@@ -21,9 +21,9 @@ const TeamsList = [
         short: 'BAR',
         url: '/Assets/team-icons/fc-barcelona.png',
         stats: {
-            ATT: 81,
-            MID: 83,
-            DEF: 80,
+            ATT: 83,
+            MID: 85,
+            DEF: 84,
         }
     },
     {

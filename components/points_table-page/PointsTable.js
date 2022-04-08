@@ -19,10 +19,9 @@ const PointsTable = () => {
                 }
             });
             const responseData = await response.json();
-            console.log(responseData[2]);
-            setTeams(responseData[2].pointsTable);
+            console.log(responseData[0].pointsTable);
+            setTeams(responseData[0].pointsTable);
         }
-
         if (tournament !== undefined) {
             tournamentDetailsFetcher();
         }
@@ -32,8 +31,10 @@ const PointsTable = () => {
     teams.length > 0 ? teams.sort((a, b) => a.points < b.points ? 1 : -1) : null;
 
     return (
-        <ContentBox heading={ `${tournament}` } headingStyle={ 'text-4xl font-bold' } styles={ 'overflow-hidden' }>
-            <div className='w-full h-full overflow-y-scroll'>
+        <ContentBox heading={ `${tournament}` }
+            headingStyle={ 'text-4xl font-bold border-b-2 border-b-primary_dark_blue' }
+            styles={ 'overflow-hidden' }>
+            <div className='w-full h-full overflow-y-auto '>
                 <PointsTableTeamDiv
                     rank=''
                     logo=''
