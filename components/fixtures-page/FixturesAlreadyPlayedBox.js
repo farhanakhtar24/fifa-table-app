@@ -8,7 +8,6 @@ const FixturesAlreadyPlayedBox = ({ fixtures }) => {
             { fixtures.filter(fixture => fixture.played === true).map((fixture) => {
                 return (
                     <AlreadyPlayedDiv
-                        fixturesArray={ fixtures }
                         homeTeam={ fixture.homeTeam }
                         awayTeam={ fixture.awayTeam }
                     />

@@ -1,12 +1,14 @@
 import React, { useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ContentBox from '../UI/ContentBox';
 import { useRouter } from 'next/router';
+import { makeSelectedTeamsArrayEmpty } from '../../redux/newTournamentSlice';
 
 const AddNewTournamentNameBox = (props) => {
     const router = useRouter();
     const selectedTeams = useSelector(state => state.newTournament.selectedTeams);
     const inputRef = useRef('');
+    const dispatch = useDispatch();
 
     const addTournamentData = async function (selectedTeams) {
         const response = await fetch('/api/new-tournament', {
@@ -18,13 +20,14 @@ const AddNewTournamentNameBox = (props) => {
         });
 
         const responseData = await response.json();
+
     }
 
     const formSubmitHandler = async function (e) {
         e.preventDefault();
-
         if (inputRef.current.value.length > 0 && selectedTeams.length >= 2) {
             await addTournamentData({ selectedTeams, tournamentName: inputRef.current.value });
+            dispatch(makeSelectedTeamsArrayEmpty());
             router.push(`${inputRef.current.value}/points-table`);
         } else if (inputRef.current.value.length === 0 && selectedTeams.length < 2) {
             alert('Please select at least two teams & add a tournament name !!');
