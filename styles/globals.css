@@ -26,3 +26,17 @@
         margin: 0;
     }
 }
+
+::-webkit-scrollbar {
+    width: 10px
+}
+
+::-webkit-scrollbar-track {
+    background: #D6DCF1;
+    border-radius: 10px
+}
+
+::-webkit-scrollbar-thumb {
+    background: #071656;
+    border-radius: 10px
+}

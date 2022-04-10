@@ -1,24 +1,21 @@
 import { MongoClient } from 'mongodb';
 
-// /api/new-tournament
+// /api/delete-tournament
 
 const handler = async function (req, res) {
     if (req.method === 'POST') {
-        const tournamentName = req.body;
+        const { fixturesArraycopy: fixtures, tournamentName } = req.body;
 
         const client = await MongoClient.connect('mongodb+srv://developer-farhan:farhan779@cluster0.83q8h.mongodb.net/tournaments?retryWrites=true&w=majority')
 
         const db = client.db();
 
-        const collection = db.collection(tournamentName);
-
-        const result = await collection.find({ name: 'fixtures' }).toArray();
-
+        const collection1 = db.collection(tournamentName);
+        const updatingFixtures = await collection1.replaceOne({ name: "fixtures" }, { name: 'fixtures', fixtures });
 
         client.close();
 
-        res.json(result);
-
+        res.status(201).json(updatingFixtures);
     }
 }
 

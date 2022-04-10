@@ -14,6 +14,7 @@ const handler = async function (req, res) {
 
         const result = await collection.find({ name: 'pointsTable' }).toArray();
 
+
         client.close();
 
         res.json(result);

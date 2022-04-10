@@ -1,12 +1,43 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import updateFixturesArray from '../../hooks/use-updateFixturesBox';
 
-const ToBePlayedDiv = ({ homeTeam, awayTeam }) => {
+const ToBePlayedDiv = ({ homeTeam, awayTeam, index, fixturesArray, onSetFixturesArray }) => {
     const homeTeamScoreRef = useRef('');
     const awayTeamScoreRef = useRef('');
 
-    const scoreSubmitHandler = function () {
-        console.log(homeTeamScoreRef.current.value, awayTeamScoreRef.current.value);
+    const router = useRouter();
+    const tournamentName = router.query.tournament;
+
+    const scoreSubmitHandler = async function () {
+
+        const pointsTableUpdater = async function () {
+
+            const { playedFixture, fixturesArraycopy } = updateFixturesArray(
+                fixturesArray,
+                index,
+                homeTeamScoreRef.current.value,
+                awayTeamScoreRef.current.value
+            );
+
+            const response = await fetch('/api/update-pointsTable', {
+                method: 'POST',
+                body: JSON.stringify({ fixturesArraycopy, tournamentName }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const responseData = await response.json();
+            console.log(responseData);
+            router.reload(window.location.pathname);
+        }
+
+        if (tournamentName !== undefined && homeTeamScoreRef.current.value !== '' && awayTeamScoreRef.current.value !== '') {
+            pointsTableUpdater();
+        } else {
+            alert('Please enter a score for both teams !!!');
+        }
     }
 
     return (

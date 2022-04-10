@@ -18,15 +18,14 @@ const AddNewTournamentNameBox = (props) => {
         });
 
         const responseData = await response.json();
-        console.log(responseData);
     }
 
-    const formSubmitHandler = function (e) {
+    const formSubmitHandler = async function (e) {
         e.preventDefault();
 
         if (inputRef.current.value.length > 0 && selectedTeams.length >= 2) {
-            addTournamentData({ selectedTeams, tournamentName: inputRef.current.value });
-            router.replace(`${inputRef.current.value}/points-table`);
+            await addTournamentData({ selectedTeams, tournamentName: inputRef.current.value });
+            router.push(`${inputRef.current.value}/points-table`);
         } else if (inputRef.current.value.length === 0 && selectedTeams.length < 2) {
             alert('Please select at least two teams & add a tournament name !!');
         } else if (inputRef.current.value.length === 0) {

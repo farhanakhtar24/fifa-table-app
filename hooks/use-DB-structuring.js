@@ -7,7 +7,6 @@ function shuffleArray(array) {
 
 const useDBstructuring = (selectedTeams) => {
     const fixtures = [];
-    const fixturesPlayed = [];
     const pointsTable = [];
 
     selectedTeams.forEach(team => {
@@ -28,15 +27,22 @@ const useDBstructuring = (selectedTeams) => {
     for (let i = 0; i < selectedTeams.length; i++) {
         for (let j = i + 1; j < selectedTeams.length; j++) {
             fixtures.push({
-                homeTeam: selectedTeams[i],
-                awayTeam: selectedTeams[j]
+                homeTeam: {
+                    ...selectedTeams[i],
+                    goals: 0
+                },
+                awayTeam: {
+                    ...selectedTeams[j],
+                    goals: 0
+                },
+                played: false
             })
         }
     }
 
     shuffleArray(fixtures);
 
-    return { fixtures, pointsTable, fixturesPlayed };
+    return { fixtures, pointsTable };
 }
 
 export default useDBstructuring;

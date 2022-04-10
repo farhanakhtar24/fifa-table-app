@@ -16,8 +16,6 @@ const handler = async function (req, res) {
         const collection2 = db.collection(tournamentName);
         const result2 = await collection2.drop();
 
-        console.log(result, result2);
-
         client.close();
 
         res.status(201).json({ message: 'Tournament deleted successfully' });
