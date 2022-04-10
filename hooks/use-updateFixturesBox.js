@@ -1,6 +1,7 @@
 
-const updateFixturesArray = function (fixturesArray, index, homeTeamScore, awayTeamScore) {
+const updateFixturesArray = function (fixturesArray, currentFixtureObj, homeTeamScore, awayTeamScore) {
     const fixturesArraycopy = [...fixturesArray];
+    const index = fixturesArraycopy.findIndex(fixture => fixture.id === currentFixtureObj.id);
     fixturesArraycopy[index].played = true;
     fixturesArraycopy[index].homeTeam.goals = Number(homeTeamScore);
     fixturesArraycopy[index].awayTeam.goals = Number(awayTeamScore);

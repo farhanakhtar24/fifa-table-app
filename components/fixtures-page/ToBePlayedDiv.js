@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import updateFixturesArray from '../../hooks/use-updateFixturesBox';
 
-const ToBePlayedDiv = ({ homeTeam, awayTeam, index, fixturesArray, onSetFixturesArray }) => {
+const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray }) => {
     const homeTeamScoreRef = useRef('');
     const awayTeamScoreRef = useRef('');
 
@@ -11,16 +11,8 @@ const ToBePlayedDiv = ({ homeTeam, awayTeam, index, fixturesArray, onSetFixtures
     const tournamentName = router.query.tournament;
 
     const scoreSubmitHandler = async function () {
-
         const pointsTableUpdater = async function () {
-
-            const { playedFixture, fixturesArraycopy } = updateFixturesArray(
-                fixturesArray,
-                index,
-                homeTeamScoreRef.current.value,
-                awayTeamScoreRef.current.value
-            );
-
+            const { playedFixture, fixturesArraycopy } = updateFixturesArray(fixturesArray, currentFixtureObj, homeTeamScoreRef.current.value, awayTeamScoreRef.current.value);
             const response = await fetch('/api/update-pointsTable', {
                 method: 'POST',
                 body: JSON.stringify({ fixturesArraycopy, tournamentName }),

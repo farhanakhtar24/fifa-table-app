@@ -35,7 +35,8 @@ const useDBstructuring = (selectedTeams) => {
                     ...selectedTeams[j],
                     goals: 0
                 },
-                played: false
+                played: false,
+                id: `${i}${j}`
             })
         }
     }
