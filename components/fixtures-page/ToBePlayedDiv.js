@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import updateFulltournament from '../../hooks/use-updateFixturesBox';
+import { ImSpinner2 } from 'react-icons/im';
+
 
 const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray, table }) => {
     const homeTeamScoreRef = useRef('');
@@ -9,6 +11,9 @@ const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray, t
 
     const router = useRouter();
     const tournamentName = router.query.tournament;
+
+    const [isLoading, setIsloading] = useState(false);
+
 
     const scoreSubmitHandler = async function () {
         const tournamentUpdater = async function () {
@@ -27,11 +32,12 @@ const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray, t
                 }
             });
             const responseData = await response.json();
-            console.log(responseData);
+            setIsloading(false);
             router.reload(window.location.pathname);
         }
 
         if (tournamentName !== undefined && homeTeamScoreRef.current.value !== '' && awayTeamScoreRef.current.value !== '') {
+            setIsloading(true);
             tournamentUpdater();
         } else {
             alert('Please enter a score for both teams !!!');
@@ -70,7 +76,8 @@ const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray, t
                     <button onClick={ scoreSubmitHandler }
                         className='w-full h-full border-2 border-save_button_color_border_color rounded-lg
                         text-save_button_color_border_color uppercase font-semibold hover:text-white 
-                        hover:border-white transition-all'>
+                        hover:border-white transition-all flex justify-center items-center gap-1'>
+                        { isLoading && <ImSpinner2 className='animate-spin' /> }
                         save
                     </button>
                 </div>
