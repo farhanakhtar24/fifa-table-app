@@ -3,6 +3,7 @@ import ContentBox from '../UI/ContentBox';
 import FixturesToBePlayedBox from './FixturesToBePlayedBox';
 import FixturesAlreadyPlayedBox from './FixturesAlreadyPlayedBox';
 import { useRouter } from 'next/router';
+import { ImSpinner2 } from 'react-icons/im';
 
 
 const FixturesTable = () => {
@@ -11,6 +12,8 @@ const FixturesTable = () => {
 
     const [fixtures, setFixtures] = useState([]);
     const [table, setTable] = useState([]);
+
+    const [isLoading, setIsloading] = useState(true);
 
     useEffect(() => {
         const fixturesFetcher = async function () {
@@ -38,6 +41,7 @@ const FixturesTable = () => {
         if (tournament !== undefined) {
             fixturesFetcher();
             pointsTableFethcer();
+            setIsloading(false);
         }
     }, [tournament])
 
@@ -45,10 +49,17 @@ const FixturesTable = () => {
         <ContentBox heading={ 'Scores & Fixtures' }
             headingStyle={ 'text-4xl font-bold border-b-2 border-b-primary_dark_blue' }
             styles={ 'overflow-hidden' }>
-            <div className='w-full h-full grid grid-cols-10 overflow-hidden'>
-                <FixturesToBePlayedBox fixtures={ fixtures } table={ table } />
-                <FixturesAlreadyPlayedBox fixtures={ fixtures } />
-            </div>
+            { isLoading &&
+                <div className='w-full h-full flex justify-center items-center'>
+                    <ImSpinner2 className='animate-spin w-14 h-14' />
+                </div>
+            }
+            { !isLoading &&
+                <div className='w-full h-full grid grid-cols-10 overflow-hidden'>
+                    <FixturesToBePlayedBox fixtures={ fixtures } table={ table } />
+                    <FixturesAlreadyPlayedBox fixtures={ fixtures } />
+                </div>
+            }
         </ContentBox>
     )
 }

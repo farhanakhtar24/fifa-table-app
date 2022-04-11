@@ -1,14 +1,18 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ContentBox from '../UI/ContentBox';
 import { useRouter } from 'next/router';
 import { makeSelectedTeamsArrayEmpty } from '../../redux/newTournamentSlice';
+import { ImSpinner2 } from 'react-icons/im';
+
 
 const AddNewTournamentNameBox = (props) => {
     const router = useRouter();
     const selectedTeams = useSelector(state => state.newTournament.selectedTeams);
     const inputRef = useRef('');
     const dispatch = useDispatch();
+
+    const [isLoading, setIsloading] = useState(false);
 
     const addTournamentData = async function (selectedTeams) {
         const response = await fetch('/api/new-tournament', {
@@ -18,16 +22,16 @@ const AddNewTournamentNameBox = (props) => {
                 'Content-Type': 'application/json'
             }
         });
-
         const responseData = await response.json();
-
     }
 
     const formSubmitHandler = async function (e) {
         e.preventDefault();
         if (inputRef.current.value.length > 0 && selectedTeams.length >= 2) {
+            setIsloading(true);
             await addTournamentData({ selectedTeams, tournamentName: inputRef.current.value });
             dispatch(makeSelectedTeamsArrayEmpty());
+            setIsloading(false);
             router.push(`${inputRef.current.value}/points-table`);
         } else if (inputRef.current.value.length === 0 && selectedTeams.length < 2) {
             alert('Please select at least two teams & add a tournament name !!');
@@ -49,9 +53,13 @@ const AddNewTournamentNameBox = (props) => {
                 </label>
                 <input className='w-1/2 bg-input_background/60 outline-none text-center py-3 rounded 
                 focus:outline-primary_dark_blue' ref={ inputRef } />
-                <button className='w-1/2 bg-input_background outline-none text-center py-3 rounded
-                active:bg-primary_dark_blue active:text-white transition-all 
-                focus:outline-primary_dark_blue'>Add</button>
+                <button
+                    className='w-1/2 bg-input_background outline-none text-center py-3 rounded
+                    active:bg-primary_dark_blue active:text-white transition-all
+                    focus:outline-primary_dark_blue flex justify-center items-center gap-1'>
+                    { isLoading && <ImSpinner2 className='animate-spin' /> }
+                    Add
+                </button>
             </form>
         </ContentBox>
     )

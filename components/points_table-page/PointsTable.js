@@ -2,10 +2,14 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import ContentBox from '../UI/ContentBox'
 import PointsTableTeamDiv from './PointsTableTeamDiv'
+import { ImSpinner2 } from 'react-icons/im';
+
 
 const PointsTable = () => {
     const router = useRouter();
     const { tournament } = router.query;
+
+    const [isLoading, setIsloading] = useState(true);
 
     const [teams, setTeams] = useState([]);
 
@@ -19,8 +23,8 @@ const PointsTable = () => {
                 }
             });
             const responseData = await response.json();
-            console.log(responseData[0].pointsTable);
             setTeams(responseData[0].pointsTable);
+            setIsloading(false);
         }
         if (tournament !== undefined) {
             tournamentDetailsFetcher();
@@ -41,37 +45,44 @@ const PointsTable = () => {
         <ContentBox heading={ `${tournament}` }
             headingStyle={ 'text-4xl font-bold border-b-2 border-b-primary_dark_blue' }
             styles={ 'overflow-hidden' }>
-            <div className='w-full h-full overflow-y-auto '>
-                <PointsTableTeamDiv
-                    rank=''
-                    logo=''
-                    name=''
-                    played='P'
-                    won='W'
-                    drawn='D'
-                    lost='L'
-                    goals_for='GF'
-                    goals_against='GA'
-                    points='PTS'
-                />
-                { teams.length > 0 &&
-                    teams.map((team, index) => {
-                        return (
-                            <PointsTableTeamDiv
-                                rank={ index + 1 }
-                                logo={ team.url }
-                                name={ team.name }
-                                played={ team.played }
-                                won={ team.won }
-                                drawn={ team.drawn }
-                                lost={ team.lost }
-                                goals_for={ team.goals_for }
-                                goals_against={ team.goals_against }
-                                points={ team.points }
-                            />
-                        )
-                    }) }
-            </div>
+            { isLoading &&
+                <div className='w-full h-full flex justify-center items-center'>
+                    <ImSpinner2 className='animate-spin w-14 h-14' />
+                </div>
+            }
+            { !isLoading &&
+                <div className='w-full h-full overflow-y-auto '>
+                    <PointsTableTeamDiv
+                        rank=''
+                        logo=''
+                        name=''
+                        played='P'
+                        won='W'
+                        drawn='D'
+                        lost='L'
+                        goals_for='GF'
+                        goals_against='GA'
+                        points='PTS'
+                    />
+                    { teams.length > 0 &&
+                        teams.map((team, index) => {
+                            return (
+                                <PointsTableTeamDiv
+                                    rank={ index + 1 }
+                                    logo={ team.url }
+                                    name={ team.name }
+                                    played={ team.played }
+                                    won={ team.won }
+                                    drawn={ team.drawn }
+                                    lost={ team.lost }
+                                    goals_for={ team.goals_for }
+                                    goals_against={ team.goals_against }
+                                    points={ team.points }
+                                />
+                            )
+                        }) }
+                </div>
+            }
         </ContentBox>
     )
 }
