@@ -1,7 +1,7 @@
 import React from 'react'
 import ToBePlayedDiv from './ToBePlayedDiv';
 
-const FixturesToBePlayedBox = ({ fixtures }) => {
+const FixturesToBePlayedBox = ({ fixtures, table }) => {
 
     return (
         <div className='col-span-5 w-full h-full p-10 overflow-y-auto border-r-2 border-r-primary_dark_blue 
@@ -9,6 +9,7 @@ const FixturesToBePlayedBox = ({ fixtures }) => {
             { fixtures.filter(fixture => fixture.played === false).map((fixture) => {
                 return (
                     <ToBePlayedDiv
+                        table={ table }
                         currentFixtureObj={ fixture }
                         fixturesArray={ fixtures }
                         homeTeam={ fixture.homeTeam }

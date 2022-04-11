@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import updateFixturesArray from '../../hooks/use-updateFixturesBox';
+import updateFulltournament from '../../hooks/use-updateFixturesBox';
 
-const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray }) => {
+const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray, table }) => {
     const homeTeamScoreRef = useRef('');
     const awayTeamScoreRef = useRef('');
 
@@ -11,11 +11,17 @@ const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray })
     const tournamentName = router.query.tournament;
 
     const scoreSubmitHandler = async function () {
-        const pointsTableUpdater = async function () {
-            const { playedFixture, fixturesArraycopy } = updateFixturesArray(fixturesArray, currentFixtureObj, homeTeamScoreRef.current.value, awayTeamScoreRef.current.value);
+        const tournamentUpdater = async function () {
+            const { playedFixture, fixturesArraycopy, tableCopy } = updateFulltournament(
+                fixturesArray,
+                currentFixtureObj,
+                homeTeamScoreRef.current.value,
+                awayTeamScoreRef.current.value,
+                table
+            );
             const response = await fetch('/api/update-pointsTable', {
                 method: 'POST',
-                body: JSON.stringify({ fixturesArraycopy, tournamentName }),
+                body: JSON.stringify({ fixturesArraycopy, tournamentName, tableCopy }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -26,7 +32,7 @@ const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray })
         }
 
         if (tournamentName !== undefined && homeTeamScoreRef.current.value !== '' && awayTeamScoreRef.current.value !== '') {
-            pointsTableUpdater();
+            tournamentUpdater();
         } else {
             alert('Please enter a score for both teams !!!');
         }
