@@ -28,7 +28,14 @@ const PointsTable = () => {
     }, [tournament])
 
 
-    teams.length > 0 ? teams.sort((a, b) => a.points < b.points ? 1 : -1) : null;
+    teams.length > 0 ? teams.sort((a, b) => {
+        if (a.points !== b.points) {
+            return a.points < b.points ? 1 : -1
+        }
+        else {
+            return (a.goals_for - a.goals_against) < (b.goals_for - b.goals_against) ? 1 : -1
+        }
+    }) : null;
 
     return (
         <ContentBox heading={ `${tournament}` }
