@@ -51,36 +51,40 @@ const PointsTable = () => {
                 </div>
             }
             { !isLoading &&
-                <div className='w-full h-full overflow-y-auto '>
-                    <PointsTableTeamDiv
-                        rank=''
-                        logo=''
-                        name=''
-                        played='P'
-                        won='W'
-                        drawn='D'
-                        lost='L'
-                        goals_for='GF'
-                        goals_against='GA'
-                        points='PTS'
-                    />
-                    { teams.length > 0 &&
-                        teams.map((team, index) => {
-                            return (
-                                <PointsTableTeamDiv
-                                    rank={ index + 1 }
-                                    logo={ team.url }
-                                    name={ team.name }
-                                    played={ team.played }
-                                    won={ team.won }
-                                    drawn={ team.drawn }
-                                    lost={ team.lost }
-                                    goals_for={ team.goals_for }
-                                    goals_against={ team.goals_against }
-                                    points={ team.points }
-                                />
-                            )
-                        }) }
+                <div className='w-full h-full flex flex-col overflow-y-auto'>
+                    <div className='w-full pr-2.5'>
+                        <PointsTableTeamDiv
+                            rank=''
+                            logo=''
+                            name=''
+                            played='P'
+                            won='W'
+                            drawn='D'
+                            lost='L'
+                            goals_for='GF'
+                            goals_against='GA'
+                            points='PTS'
+                        />
+                    </div>
+                    <div className='w-full h-full overflow-y-auto'>
+                        { teams.length > 0 &&
+                            teams.map((team, index) => {
+                                return (
+                                    <PointsTableTeamDiv
+                                        rank={ index + 1 }
+                                        logo={ team.url }
+                                        name={ team.name }
+                                        played={ team.played }
+                                        won={ team.won }
+                                        drawn={ team.drawn }
+                                        lost={ team.lost }
+                                        goals_for={ team.goals_for }
+                                        goals_against={ team.goals_against }
+                                        points={ team.points }
+                                    />
+                                )
+                            }) }
+                    </div>
                 </div>
             }
         </ContentBox>

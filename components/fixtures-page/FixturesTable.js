@@ -13,7 +13,7 @@ const FixturesTable = () => {
     const [fixtures, setFixtures] = useState([]);
     const [table, setTable] = useState([]);
 
-    const [isLoading, setIsloading] = useState(true);
+    const [isLoadingFixtures, setIsloadingFixtures] = useState(true);
 
     useEffect(() => {
         const fixturesFetcher = async function () {
@@ -26,6 +26,7 @@ const FixturesTable = () => {
             });
             const responseData = await response.json();
             setFixtures(responseData[0].fixtures);
+            setIsloadingFixtures(false);
         }
         const pointsTableFethcer = async function () {
             const response = await fetch('/api/fetch-pointsTable', {
@@ -41,7 +42,6 @@ const FixturesTable = () => {
         if (tournament !== undefined) {
             fixturesFetcher();
             pointsTableFethcer();
-            setIsloading(false);
         }
     }, [tournament])
 
@@ -49,12 +49,12 @@ const FixturesTable = () => {
         <ContentBox heading={ 'Scores & Fixtures' }
             headingStyle={ 'text-4xl font-bold border-b-2 border-b-primary_dark_blue' }
             styles={ 'overflow-hidden' }>
-            { isLoading &&
+            { isLoadingFixtures &&
                 <div className='w-full h-full flex justify-center items-center'>
                     <ImSpinner2 className='animate-spin w-14 h-14' />
                 </div>
             }
-            { !isLoading &&
+            { !isLoadingFixtures &&
                 <div className='w-full h-full grid grid-cols-10 overflow-hidden'>
                     <FixturesToBePlayedBox fixtures={ fixtures } table={ table } />
                     <FixturesAlreadyPlayedBox fixtures={ fixtures } />
