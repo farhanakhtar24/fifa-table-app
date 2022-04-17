@@ -36,7 +36,7 @@ const PointsTable = () => {
         if (a.points !== b.points) {
             return a.points < b.points ? 1 : -1
         }
-        else {
+        else if (a.points === b.points) {
             return (a.goals_for - a.goals_against) < (b.goals_for - b.goals_against) ? 1 : -1
         }
     }) : null;
