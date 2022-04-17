@@ -12,7 +12,7 @@ const index = () => {
     return (
         <Fragment>
             <Head>
-                <title className='uppercase'>{ tournament }</title>
+                <title>Points Table || { `${tournament}`.toUpperCase() }</title>
             </Head>
             <div className='pointsTablePageClass'>
                 <div className='flex gap-1'>
