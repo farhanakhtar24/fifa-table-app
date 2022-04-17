@@ -13,7 +13,7 @@ const TeamStatsBox = (props) => {
     return (
         <ContentBox heading={ 'Team Stats' } headingStyle={ 'text-xl font-medium' } styles={ 'rounded-lg' }>
             <div className='w-full h-full flex flex-col items-center gap-3'>
-                { imgSrc.length > 0 && <Image src={ imgSrc } width={ 100 } height={ 100 } /> }
+                { imgSrc.length > 0 && <Image src={ imgSrc } width={ 100 } height={ 100 } alt={ imgSrc } /> }
                 <div className='w-full grid grid-cols-5'>
                     <div></div>
                     <div className='flex flex-col items-center gap-1'>

@@ -17,7 +17,7 @@ const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray, t
 
     const scoreSubmitHandler = async function () {
         const tournamentUpdater = async function () {
-            const { playedFixture, fixturesArraycopy, tableCopy } = updateFulltournament(
+            const { fixturesArraycopy, tableCopy } = updateFulltournament(
                 fixturesArray,
                 currentFixtureObj,
                 homeTeamScoreRef.current.value,
@@ -49,7 +49,7 @@ const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray, t
             <div className='w-full grid grid-cols-3 text-2xl'>
                 <div className='flex justify-evenly items-center'>
                     <div className='w-16 h-16'>
-                        <Image src={ homeTeam.url } width={ 400 } height={ 400 } />
+                        <Image src={ homeTeam.url } width={ 400 } height={ 400 } alt='home-team' />
                     </div>
                     { homeTeam.short }
                 </div>
@@ -59,7 +59,7 @@ const ToBePlayedDiv = ({ homeTeam, awayTeam, currentFixtureObj, fixturesArray, t
                 <div className='flex justify-evenly items-center'>
                     { awayTeam.short }
                     <div className='w-16 h-16'>
-                        <Image src={ awayTeam.url } width={ 400 } height={ 400 } />
+                        <Image src={ awayTeam.url } width={ 400 } height={ 400 } alt='away-team' />
                     </div>
                 </div>
             </div>
