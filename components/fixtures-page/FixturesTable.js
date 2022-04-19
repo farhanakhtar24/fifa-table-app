@@ -5,7 +5,6 @@ import FixturesAlreadyPlayedBox from './FixturesAlreadyPlayedBox';
 import { useRouter } from 'next/router';
 import { ImSpinner2 } from 'react-icons/im';
 
-
 const FixturesTable = () => {
     const router = useRouter();
     const { tournament } = router.query;
@@ -64,4 +63,4 @@ const FixturesTable = () => {
     )
 }
 
-export default FixturesTable
+export default FixturesTable;
