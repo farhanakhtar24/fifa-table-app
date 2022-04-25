@@ -68,11 +68,14 @@ export async function getStaticProps(context) {
 
     const result = await collection.find({ name: 'pointsTable' }).toArray();
 
+
     client.close();
 
     return {
         props: {
-            teamsArray: result[0].pointsTable,
+            teamsArray: result[0].pointsTable.map((team) => {
+                return team;
+            }),
         },
         revalidate: 1,
     }

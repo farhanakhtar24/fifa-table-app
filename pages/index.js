@@ -37,7 +37,7 @@ export async function getStaticProps(context) {
     props: {
       tournamentsArray: result.map(tournament => {
         return {
-          name: tournament.name,
+          name: tournament.name.toString(),
           imgUrls: tournament.imgUrls,
         }
       }),
