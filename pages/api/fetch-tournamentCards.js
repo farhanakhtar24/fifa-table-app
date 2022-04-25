@@ -12,7 +12,6 @@ const handler = async function (req, res) {
 
         const result = await collection.find().toArray();
 
-
         client.close();
 
         res.status(201).json(result);

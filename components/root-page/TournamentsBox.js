@@ -10,20 +10,10 @@ import "swiper/css/navigation";
 import TournamentCard from './TournamentCard';
 import { ImSpinner2 } from 'react-icons/im';
 
-const TournamentsBox = () => {
-    const [tournamentsArray, setTournamentsArray] = useState([]);
+const TournamentsBox = ({ tournamentsArray }) => {
+    const [tournamentsReversedArray, setTournamentsArray] = useState(tournamentsArray.reverse());
 
-    const [isLoading, setIsloading] = useState(true);
-
-    useEffect(() => {
-        const tournamentDetailsFetcher = async function () {
-            const response = await fetch('/api/fetch-tournamentCards');
-            const responseData = await response.json();
-            setTournamentsArray(responseData.reverse());
-            setIsloading(false);
-        }
-        tournamentDetailsFetcher();
-    }, [])
+    const [isLoading, setIsloading] = useState(false);
 
     return (
         <ContentBox heading={ 'tournaments' } headingStyle={ 'text-4xl font-bold' }>
@@ -48,8 +38,8 @@ const TournamentsBox = () => {
                             modules={ [Navigation, Pagination] }
                             className="w-full h-full">
                             {
-                                tournamentsArray.length > 0 &&
-                                tournamentsArray.map((tournament, index) => {
+                                tournamentsReversedArray.length > 0 &&
+                                tournamentsReversedArray.map((tournament) => {
                                     return <SwiperSlide>
                                         <TournamentCard tournamentDetails={ tournament } />
                                     </SwiperSlide>

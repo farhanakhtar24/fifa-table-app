@@ -5,32 +5,11 @@ import PointsTableTeamDiv from './PointsTableTeamDiv'
 import { ImSpinner2 } from 'react-icons/im';
 
 
-const PointsTable = () => {
+const PointsTable = ({ teams }) => {
     const router = useRouter();
     const { tournament } = router.query;
 
-    const [isLoading, setIsloading] = useState(true);
-
-    const [teams, setTeams] = useState([]);
-
-    useEffect(() => {
-        const tournamentDetailsFetcher = async function () {
-            const response = await fetch('/api/fetch-pointsTable', {
-                method: 'POST',
-                body: JSON.stringify(tournament),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const responseData = await response.json();
-            setTeams(responseData[0].pointsTable);
-            setIsloading(false);
-        }
-        if (tournament !== undefined) {
-            tournamentDetailsFetcher();
-        }
-    }, [tournament])
-
+    const [isLoading, setIsloading] = useState(false);
 
     teams.length > 0 ? teams.sort((a, b) => {
         if (a.points !== b.points) {
