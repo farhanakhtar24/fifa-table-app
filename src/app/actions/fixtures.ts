@@ -18,22 +18,22 @@ export async function saveFixtureScore(input: {
   homeGoals: number;
   awayGoals: number;
 }) {
-  ensureDb();
+  await ensureDb();
   const db = getDb();
   const parsed = scoreSchema.parse(input);
-  const fixture = db.select().from(fixtures).where(eq(fixtures.id, parsed.fixtureId)).get();
+  const fixture = (await db.select().from(fixtures).where(eq(fixtures.id, parsed.fixtureId)).limit(1))[0];
   if (!fixture) {
     throw new Error("Fixture not found.");
   }
 
-  db.update(fixtures)
+  await db
+    .update(fixtures)
     .set({
       homeGoals: parsed.homeGoals,
       awayGoals: parsed.awayGoals,
       played: true,
     })
-    .where(eq(fixtures.id, parsed.fixtureId))
-    .run();
+    .where(eq(fixtures.id, parsed.fixtureId));
 
   revalidatePath("/");
   revalidatePath(`/t/${fixture.tournamentId}`);

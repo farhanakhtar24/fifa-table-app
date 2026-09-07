@@ -1,34 +1,30 @@
-import "server-only";
-
-import fs from "node:fs";
-import path from "node:path";
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 
-type DbBundle = {
-  sqlite: Database.Database;
-  db: ReturnType<typeof drizzle<typeof schema>>;
-};
+function createBundle() {
+  const url = process.env.DATABASE_URL;
+  if (!url) {
+    throw new Error("DATABASE_URL is missing.");
+  }
 
-const globalForDb = globalThis as unknown as { __fifaDb?: DbBundle };
-
-function createBundle(): DbBundle {
-  const dbPath = path.join(process.cwd(), "data", "app.db");
-  fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-  const sqlite = new Database(dbPath, { timeout: 10000 });
-  sqlite.pragma("journal_mode = WAL");
-  sqlite.pragma("foreign_keys = ON");
-  sqlite.pragma("busy_timeout = 10000");
-  return { sqlite, db: drizzle(sqlite, { schema }) };
+  const sql = neon(url);
+  return { sql, db: drizzle(sql, { schema }) };
 }
 
-export function getSqlite() {
-  globalForDb.__fifaDb ??= createBundle();
-  return globalForDb.__fifaDb.sqlite;
+type DbBundle = ReturnType<typeof createBundle>;
+
+const globalForDb = globalThis as unknown as { __fifaPg?: DbBundle };
+
+function getBundle(): DbBundle {
+  globalForDb.__fifaPg ??= createBundle();
+  return globalForDb.__fifaPg;
+}
+
+export function getSql() {
+  return getBundle().sql;
 }
 
 export function getDb() {
-  globalForDb.__fifaDb ??= createBundle();
-  return globalForDb.__fifaDb.db;
+  return getBundle().db;
 }

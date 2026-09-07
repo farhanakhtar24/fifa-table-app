@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { syncClubsIfStale } from "@/lib/football/sync";
+import { syncFootballCache } from "@/lib/football/sync";
 
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
@@ -9,6 +9,6 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  const result = syncClubsIfStale();
+  const result = await syncFootballCache();
   return NextResponse.json(result);
 }

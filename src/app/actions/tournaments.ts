@@ -21,11 +21,11 @@ const createSchema = z.object({
 });
 
 export async function getTournaments(): Promise<TournamentSummary[]> {
-  ensureDb();
+  await ensureDb();
   const db = getDb();
-  const rows = db.select().from(tournaments).all();
-  const allTeams = db.select().from(tournamentTeams).all();
-  const allFixtures = db.select().from(fixtures).all();
+  const rows = await db.select().from(tournaments);
+  const allTeams = await db.select().from(tournamentTeams);
+  const allFixtures = await db.select().from(fixtures);
 
   return rows
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
@@ -44,13 +44,13 @@ export async function getTournaments(): Promise<TournamentSummary[]> {
 }
 
 export async function getTournament(id: string): Promise<TournamentDetail | null> {
-  ensureDb();
+  await ensureDb();
   const db = getDb();
-  const tournament = db.select().from(tournaments).where(eq(tournaments.id, id)).get();
+  const tournament = (await db.select().from(tournaments).where(eq(tournaments.id, id)).limit(1))[0];
   if (!tournament) return null;
 
-  const snapshot = db.select().from(tournamentTeams).where(eq(tournamentTeams.tournamentId, id)).all();
-  const games = db.select().from(fixtures).where(eq(fixtures.tournamentId, id)).all();
+  const snapshot = await db.select().from(tournamentTeams).where(eq(tournamentTeams.tournamentId, id));
+  const games = await db.select().from(fixtures).where(eq(fixtures.tournamentId, id));
   const teamMap = new Map(snapshot.map((team) => [team.teamId, toTeamDto(team)]));
 
   const table = computePointsTable(
@@ -80,7 +80,7 @@ export async function getTournament(id: string): Promise<TournamentDetail | null
 }
 
 export async function createTournament(input: { name: string; teamIds: string[] }) {
-  ensureDb();
+  await ensureDb();
   const db = getDb();
   const parsed = createSchema.parse(input);
   const uniqueIds = [...new Set(parsed.teamIds)];
@@ -88,51 +88,45 @@ export async function createTournament(input: { name: string; teamIds: string[] 
     throw new Error("Pick at least 3 clubs.");
   }
 
-  const selected = db.select().from(teams).all().filter((team) => uniqueIds.includes(team.id));
+  const catalog = await db.select().from(teams);
+  const selected = catalog.filter((team) => uniqueIds.includes(team.id));
   if (selected.length !== uniqueIds.length) {
     throw new Error("One or more clubs could not be found.");
   }
 
   const id = crypto.randomUUID();
-  db.insert(tournaments)
-    .values({
-      id,
-      name: parsed.name,
-      createdAt: new Date(),
-    })
-    .run();
+  await db.insert(tournaments).values({
+    id,
+    name: parsed.name,
+    createdAt: new Date(),
+  });
 
   for (const team of selected) {
-    db.insert(tournamentTeams)
-      .values({
-        tournamentId: id,
-        teamId: team.id,
-        name: team.name,
-        shortName: team.shortName,
-        crestUrl: team.crestUrl,
-        att: team.att,
-        mid: team.mid,
-        def: team.def,
-      })
-      .run();
+    await db.insert(tournamentTeams).values({
+      tournamentId: id,
+      teamId: team.id,
+      name: team.name,
+      shortName: team.shortName,
+      crestUrl: team.crestUrl,
+      att: team.att,
+      mid: team.mid,
+      def: team.def,
+    });
   }
 
   const pairings = assignMatchdays(generateRoundRobin(uniqueIds));
-  pairings.forEach((pairing, index) => {
-    db.insert(fixtures)
-      .values({
-        id: crypto.randomUUID(),
-        tournamentId: id,
-        homeTeamId: pairing.homeTeamId,
-        awayTeamId: pairing.awayTeamId,
-        homeGoals: null,
-        awayGoals: null,
-        played: false,
-        matchday: pairing.matchday,
-      })
-      .run();
-    void index;
-  });
+  for (const pairing of pairings) {
+    await db.insert(fixtures).values({
+      id: crypto.randomUUID(),
+      tournamentId: id,
+      homeTeamId: pairing.homeTeamId,
+      awayTeamId: pairing.awayTeamId,
+      homeGoals: null,
+      awayGoals: null,
+      played: false,
+      matchday: pairing.matchday,
+    });
+  }
 
   revalidatePath("/");
   revalidatePath(`/t/${id}`);
@@ -140,11 +134,11 @@ export async function createTournament(input: { name: string; teamIds: string[] 
 }
 
 export async function deleteTournament(id: string) {
-  ensureDb();
+  await ensureDb();
   const db = getDb();
-  db.delete(fixtures).where(eq(fixtures.tournamentId, id)).run();
-  db.delete(tournamentTeams).where(eq(tournamentTeams.tournamentId, id)).run();
-  db.delete(tournaments).where(eq(tournaments.id, id)).run();
+  await db.delete(fixtures).where(eq(fixtures.tournamentId, id));
+  await db.delete(tournamentTeams).where(eq(tournamentTeams.tournamentId, id));
+  await db.delete(tournaments).where(eq(tournaments.id, id));
   revalidatePath("/");
 }
 

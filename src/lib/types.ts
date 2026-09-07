@@ -52,6 +52,7 @@ export type PlayerCardDto = {
   teamId: string;
   teamName: string;
   teamCrest: string;
+  photoUrl: string | null;
   name: string;
   number: number | null;
   age: number | null;

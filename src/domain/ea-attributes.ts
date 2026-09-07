@@ -1,5 +1,5 @@
 import { hashString } from "./fixtures";
-import type { PositionGroup } from "./ratings";
+import type { PositionGroup, TeamRatings } from "./ratings";
 
 export type WorkRate = "Low" | "Medium" | "High";
 
@@ -30,6 +30,28 @@ const OUTFIELD_STYLES: Record<PositionGroup, string[]> = {
   MID: ["Incisive Pass", "Tiki Taka", "Press Proven", "Relentless"],
   ATT: ["Finesse Shot", "Rapid", "Technical", "Chip Shot"],
 };
+
+export function estimatePlayerOvr(input: {
+  name: string;
+  position: PositionGroup;
+  age: number | null;
+  team: TeamRatings;
+}): number {
+  const base =
+    input.position === "ATT"
+      ? input.team.att
+      : input.position === "MID"
+        ? input.team.mid
+        : input.position === "GK"
+          ? Math.round((input.team.def + input.team.mid) / 2)
+          : input.team.def;
+
+  const n = namedNoise(input.name)(5);
+  const ageBoost =
+    input.age == null ? 0 : input.age >= 24 && input.age <= 30 ? 2 : input.age >= 35 ? -4 : input.age <= 20 ? -2 : 0;
+
+  return clamp(base + n + ageBoost);
+}
 
 export function mapStatsToEaAttributes(input: {
   name: string;

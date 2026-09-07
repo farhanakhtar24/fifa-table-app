@@ -1,38 +1,44 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { ensureDb } from "@/db/ensure";
 import { playerAttributes, players, squads, teams } from "@/db/schema";
 import type { ClubDto, PlayerCardDto, SquadDto } from "@/lib/types";
 
 export async function getClubs(): Promise<ClubDto[]> {
-  ensureDb();
+  await ensureDb();
   const db = getDb();
-  return db
-    .select()
-    .from(teams)
-    .all()
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .map(toClubDto);
+  const rows = await db.select().from(teams);
+  return rows.sort((a, b) => a.name.localeCompare(b.name)).map(toClubDto);
 }
 
 export async function getSquad(teamId: string): Promise<SquadDto | null> {
-  ensureDb();
+  await ensureDb();
   const db = getDb();
-  const club = db.select().from(teams).where(eq(teams.id, teamId)).get();
+  const club = (await db.select().from(teams).where(eq(teams.id, teamId)).limit(1))[0];
   if (!club) return null;
 
-  const rows = db
-    .select({
-      player: players,
-      attrs: playerAttributes,
-    })
-    .from(squads)
-    .innerJoin(players, eq(squads.playerId, players.id))
-    .innerJoin(playerAttributes, eq(players.id, playerAttributes.playerId))
-    .where(and(eq(squads.teamId, teamId), eq(squads.season, 2026)))
-    .all();
+  const seasonRow = (
+    await db
+      .select({ season: squads.season })
+      .from(squads)
+      .where(eq(squads.teamId, teamId))
+      .orderBy(desc(squads.season))
+      .limit(1)
+  )[0];
+
+  const rows = seasonRow
+    ? await db
+        .select({
+          player: players,
+          attrs: playerAttributes,
+        })
+        .from(squads)
+        .innerJoin(players, eq(squads.playerId, players.id))
+        .innerJoin(playerAttributes, eq(players.id, playerAttributes.playerId))
+        .where(and(eq(squads.teamId, teamId), eq(squads.season, seasonRow.season)))
+    : [];
 
   const ordered = rows.sort((a, b) => {
     const rank = (pos: string) => ({ GK: 0, DEF: 1, MID: 2, ATT: 3 }[pos] ?? 9);
@@ -48,21 +54,22 @@ export async function getSquad(teamId: string): Promise<SquadDto | null> {
 }
 
 export async function getPlayer(playerId: string): Promise<PlayerCardDto | null> {
-  ensureDb();
+  await ensureDb();
   const db = getDb();
-  const row = db
-    .select({
-      player: players,
-      attrs: playerAttributes,
-      squad: squads,
-      team: teams,
-    })
-    .from(players)
-    .innerJoin(playerAttributes, eq(players.id, playerAttributes.playerId))
-    .innerJoin(squads, eq(players.id, squads.playerId))
-    .innerJoin(teams, eq(squads.teamId, teams.id))
-    .where(eq(players.id, playerId))
-    .get();
+  const row = (
+    await db
+      .select({
+        player: players,
+        attrs: playerAttributes,
+        team: teams,
+      })
+      .from(players)
+      .innerJoin(playerAttributes, eq(players.id, playerAttributes.playerId))
+      .innerJoin(squads, eq(players.id, squads.playerId))
+      .innerJoin(teams, eq(squads.teamId, teams.id))
+      .where(eq(players.id, playerId))
+      .limit(1)
+  )[0];
 
   if (!row) return null;
   return toPlayerDto(row.player, row.attrs, row.team);
@@ -91,6 +98,7 @@ function toPlayerDto(
     teamId: team.id,
     teamName: team.name,
     teamCrest: team.crestUrl,
+    photoUrl: player.photoUrl,
     name: player.name,
     number: player.number,
     age: player.age,

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { initials } from "@/lib/utils";
 import type { PlayerCardDto } from "@/lib/types";
@@ -46,8 +47,12 @@ export function PlayerCard({ player }: { player: PlayerCardDto }) {
               {player.primaryPosition}
             </p>
           </div>
-          <div className="mx-auto my-4 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-gold/30 to-white/5 text-3xl font-display text-gold">
-            {initials(player.name)}
+          <div className="mx-auto my-4 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-gold/30 to-white/5 text-3xl font-display text-gold">
+            {player.photoUrl ? (
+              <Image src={player.photoUrl} alt="" width={96} height={96} className="h-24 w-24 object-cover" />
+            ) : (
+              initials(player.name)
+            )}
           </div>
           <p className="truncate text-center text-sm font-semibold">{player.name}</p>
           <p className="mt-1 text-center text-[10px] uppercase tracking-[0.2em] text-ice/50">

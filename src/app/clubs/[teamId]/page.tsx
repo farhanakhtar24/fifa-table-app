@@ -28,11 +28,17 @@ export default async function ClubPage({ params }: { params: Promise<{ teamId: s
         <RatingPips att={squad.club.att} mid={squad.club.mid} def={squad.club.def} />
       </div>
       <HydrationBoundary state={dehydrate(client)}>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {squad.players.map((player) => (
-            <PlayerCard key={player.id} player={player} />
-          ))}
-        </div>
+        {squad.players.length === 0 ? (
+          <p className="rounded-3xl border border-white/10 bg-white/5 px-6 py-10 text-ice/70">
+            Squad not cached yet. It will land on the next daily sync.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {squad.players.map((player) => (
+              <PlayerCard key={player.id} player={player} />
+            ))}
+          </div>
+        )}
       </HydrationBoundary>
     </AppShell>
   );

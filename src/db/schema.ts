@@ -1,6 +1,6 @@
-import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { boolean, integer, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 
-export const teams = sqliteTable("teams", {
+export const teams = pgTable("teams", {
   id: text("id").primaryKey(),
   externalId: integer("external_id"),
   name: text("name").notNull(),
@@ -10,10 +10,10 @@ export const teams = sqliteTable("teams", {
   att: integer("att").notNull(),
   mid: integer("mid").notNull(),
   def: integer("def").notNull(),
-  syncedAt: integer("synced_at", { mode: "timestamp" }).notNull(),
+  syncedAt: timestamp("synced_at", { withTimezone: true, mode: "date" }).notNull(),
 });
 
-export const players = sqliteTable("players", {
+export const players = pgTable("players", {
   id: text("id").primaryKey(),
   externalId: integer("external_id"),
   name: text("name").notNull(),
@@ -23,10 +23,10 @@ export const players = sqliteTable("players", {
   nationality: text("nationality"),
   primaryPosition: text("primary_position").notNull(),
   detailedPosition: text("detailed_position"),
-  syncedAt: integer("synced_at", { mode: "timestamp" }).notNull(),
+  syncedAt: timestamp("synced_at", { withTimezone: true, mode: "date" }).notNull(),
 });
 
-export const playerAttributes = sqliteTable("player_attributes", {
+export const playerAttributes = pgTable("player_attributes", {
   playerId: text("player_id")
     .primaryKey()
     .references(() => players.id, { onDelete: "cascade" }),
@@ -51,7 +51,7 @@ export const playerAttributes = sqliteTable("player_attributes", {
   source: text("source").notNull(),
 });
 
-export const squads = sqliteTable(
+export const squads = pgTable(
   "squads",
   {
     teamId: text("team_id")
@@ -65,13 +65,13 @@ export const squads = sqliteTable(
   (table) => [primaryKey({ columns: [table.teamId, table.playerId, table.season] })],
 );
 
-export const tournaments = sqliteTable("tournaments", {
+export const tournaments = pgTable("tournaments", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull(),
 });
 
-export const tournamentTeams = sqliteTable(
+export const tournamentTeams = pgTable(
   "tournament_teams",
   {
     tournamentId: text("tournament_id")
@@ -88,7 +88,7 @@ export const tournamentTeams = sqliteTable(
   (table) => [primaryKey({ columns: [table.tournamentId, table.teamId] })],
 );
 
-export const fixtures = sqliteTable("fixtures", {
+export const fixtures = pgTable("fixtures", {
   id: text("id").primaryKey(),
   tournamentId: text("tournament_id")
     .notNull()
@@ -97,6 +97,6 @@ export const fixtures = sqliteTable("fixtures", {
   awayTeamId: text("away_team_id").notNull(),
   homeGoals: integer("home_goals"),
   awayGoals: integer("away_goals"),
-  played: integer("played", { mode: "boolean" }).notNull().default(false),
+  played: boolean("played").notNull().default(false),
   matchday: integer("matchday").notNull(),
 });
