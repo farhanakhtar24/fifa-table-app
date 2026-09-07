@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -25,8 +23,22 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
-.env*.local
+# env
+.env
+.env.*
+!.env.example
+
+# sqlite
+/data
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
 
 # vercel
 .vercel
+
+# typescript
+next-env.d.ts
+
+/docs/
