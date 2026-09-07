@@ -23,11 +23,11 @@ export function RatingPips({
         <div
           key={item.label}
           className={cn(
-            "rounded-xl border border-white/10 bg-navy/40 text-center",
+            "rounded-xl border border-border bg-muted text-center",
             compact ? "min-w-12 px-1.5 py-1" : "min-w-16 px-2 py-1.5",
           )}
         >
-          <p className="text-[9px] uppercase tracking-widest text-ice/50">{item.label}</p>
+          <p className="text-[9px] uppercase tracking-widest text-muted-foreground">{item.label}</p>
           <p className="font-display text-lg leading-none text-gold">{item.value}</p>
         </div>
       ))}

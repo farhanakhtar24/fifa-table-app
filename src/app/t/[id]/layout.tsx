@@ -20,7 +20,7 @@ export default async function TournamentLayout({
       <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.35em] text-gold">Tournament</p>
-          <h1 className="font-display text-6xl text-white">{tournament.name}</h1>
+          <h1 className="font-display text-6xl text-foreground">{tournament.name}</h1>
           <div className="mt-3 flex -space-x-2">
             {tournament.teams.map((team) => (
               <span key={team.id} className="flex h-9 w-9 items-center justify-center rounded-full border border-navy bg-ice">

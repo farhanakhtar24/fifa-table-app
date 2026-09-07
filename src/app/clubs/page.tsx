@@ -12,7 +12,7 @@ export default async function ClubsPage() {
   return (
     <AppShell scene="home">
       <p className="text-xs uppercase tracking-[0.35em] text-gold">Catalog</p>
-      <h1 className="mb-8 mt-2 font-display text-6xl text-white">Clubs</h1>
+      <h1 className="mb-8 mt-2 font-display text-6xl text-foreground">Clubs</h1>
       <HydrationBoundary state={dehydrate(client)}>
         <ClubGrid initial={clubs} />
       </HydrationBoundary>

@@ -12,8 +12,8 @@ export default async function NewTournamentPage() {
   return (
     <AppShell scene="create">
       <p className="text-xs uppercase tracking-[0.35em] text-gold">Create</p>
-      <h1 className="mt-2 font-display text-6xl text-white">New night</h1>
-      <p className="mb-8 mt-2 max-w-xl text-ice/70">Name the session, pick at least three clubs, and the fixtures write themselves.</p>
+      <h1 className="mt-2 font-display text-6xl text-foreground">New night</h1>
+      <p className="mb-8 mt-2 max-w-xl text-muted-foreground">Name the session, pick at least three clubs, and the fixtures write themselves.</p>
       <HydrationBoundary state={dehydrate(client)}>
         <CreateForm initialClubs={clubs} />
       </HydrationBoundary>

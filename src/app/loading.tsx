@@ -1,9 +1,5 @@
-import { AppShell } from "@/components/layout/app-shell";
+import { HomeLoading } from "@/components/skeletons";
 
 export default function Loading() {
-  return (
-    <AppShell>
-      <div className="h-40 animate-pulse rounded-3xl bg-white/5" />
-    </AppShell>
-  );
+  return <HomeLoading />;
 }

@@ -19,7 +19,7 @@ export function AppShell({
       <div className="pointer-events-none fixed inset-0 -z-10">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={scenes[scene]} alt="" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/80 via-navy/88 to-navy-deep" />
+        <div className="absolute inset-0 bg-overlay backdrop-blur-[1px] dark:bg-gradient-to-b dark:from-navy-deep/80 dark:via-navy/88 dark:to-navy-deep dark:backdrop-blur-0" />
       </div>
       <Nav />
       <main className="mx-auto w-full max-w-6xl px-4 pb-20 pt-28">{children}</main>

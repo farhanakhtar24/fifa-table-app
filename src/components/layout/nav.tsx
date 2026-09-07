@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -20,10 +22,10 @@ export function Nav() {
           <Image src="/Assets/ucl-logo.png" alt="Champions Night" width={36} height={36} />
           <div>
             <p className="font-display text-2xl leading-none text-gold">Champions Night</p>
-            <p className="text-[10px] uppercase tracking-[0.28em] text-ice/60">FIFA table</p>
+            <p className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">FIFA table</p>
           </div>
         </Link>
-        <nav className="flex items-center gap-1 rounded-full border border-white/10 bg-navy/50 px-2 py-1 backdrop-blur-xl">
+        <nav className="flex items-center gap-1 rounded-full border border-border bg-card/80 px-2 py-1 backdrop-blur-xl">
           {links.map((link) => {
             const active = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
             return (
@@ -32,19 +34,17 @@ export function Nav() {
                 href={link.href}
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium transition",
-                  active ? "bg-gold text-navy" : "text-ice/80 hover:text-white",
+                  active ? "bg-gold text-navy" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {link.label}
               </Link>
             );
           })}
-          <Link
-            href="/new"
-            className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-gold hover:bg-white/15"
-          >
+          <Link href="/new" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-gold")}>
             New night
           </Link>
+          <ThemeToggle />
         </nav>
       </div>
     </header>

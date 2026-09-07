@@ -23,8 +23,8 @@ export const dynamic = "force-dynamic";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${outfit.variable} ${bebas.variable} font-sans antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${outfit.variable} ${bebas.variable} bg-background font-sans text-foreground antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

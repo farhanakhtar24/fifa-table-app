@@ -21,7 +21,7 @@ export function TournamentTabs({ id }: { id: string }) {
             href={item.href}
             className={cn(
               "rounded-full px-4 py-2 text-sm font-semibold",
-              active ? "bg-gold text-navy" : "bg-white/5 text-ice/80 hover:bg-white/10",
+              active ? "bg-gold text-navy" : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
             )}
           >
             {item.label}

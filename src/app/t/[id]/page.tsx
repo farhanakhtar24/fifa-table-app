@@ -19,7 +19,7 @@ export default async function TournamentPage({ params }: { params: Promise<{ id:
       <div className="mb-6 flex flex-wrap gap-3">
         {tournament.teams.map((team) => (
           <Glass key={team.id} className="flex items-center gap-3 px-4 py-3">
-            <p className="text-sm font-semibold text-white">{team.shortName}</p>
+            <p className="text-sm font-semibold text-foreground">{team.shortName}</p>
             <RatingPips att={team.att} mid={team.mid} def={team.def} compact />
           </Glass>
         ))}

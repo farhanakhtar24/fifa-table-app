@@ -16,14 +16,14 @@ export default async function HomePage() {
       <section className="mb-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
         <div>
           <p className="text-xs uppercase tracking-[0.35em] text-gold">Local FIFA nights</p>
-          <h1 className="mt-2 font-display text-6xl text-white md:text-7xl">The table</h1>
-          <p className="mt-3 max-w-xl text-ice/70">
-            Pick clubs, generate fixtures, keep score. Dummy data for now — live football cache later.
+          <h1 className="mt-2 font-display text-6xl text-foreground md:text-7xl">The table</h1>
+          <p className="mt-3 max-w-xl text-muted-foreground">
+            Pick clubs, generate fixtures, keep score from your cached squads.
           </p>
         </div>
         <div className="flex items-center gap-4">
           <Image src="/Assets/ucl-trophy.png" alt="" width={72} height={72} className="opacity-90" />
-          <Link href="/new" className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-navy">
+          <Link href="/new" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
             New night
           </Link>
         </div>

@@ -8,6 +8,7 @@ import { ImBin } from "react-icons/im";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteTournament } from "@/app/actions/tournaments";
 import { Glass } from "@/components/ui/glass";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { queryKeys } from "@/lib/query/keys";
 import type { TournamentSummary } from "@/lib/types";
@@ -30,14 +31,12 @@ export function TournamentCard({ tournament }: { tournament: TournamentSummary }
       <Link href={`/t/${tournament.id}`} className="flex flex-1 flex-col gap-5">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="font-display text-3xl text-white">{tournament.name}</p>
-            <p className="text-xs uppercase tracking-[0.22em] text-ice/50">
+            <p className="font-display text-3xl text-foreground">{tournament.name}</p>
+            <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
               {tournament.played}/{tournament.total} played
             </p>
           </div>
-          <span className="rounded-full border border-gold/40 px-3 py-1 text-[10px] uppercase tracking-widest text-gold">
-            {tournament.played === tournament.total && tournament.total > 0 ? "Complete" : "Live"}
-          </span>
+          <Badge>{tournament.played === tournament.total && tournament.total > 0 ? "Complete" : "Live"}</Badge>
         </div>
         <div className="grid grid-cols-4 gap-2">
           {tournament.teams.slice(0, 8).map((team) => (
@@ -48,7 +47,7 @@ export function TournamentCard({ tournament }: { tournament: TournamentSummary }
         </div>
       </Link>
       <div className="mt-4 flex items-center justify-between">
-        <p className="text-xs text-ice/50">{tournament.teams.length} clubs</p>
+        <p className="text-xs text-muted-foreground">{tournament.teams.length} clubs</p>
         {confirming ? (
           <div className="flex gap-2">
             <Button variant="ghost" onClick={() => setConfirming(false)}>
@@ -61,7 +60,7 @@ export function TournamentCard({ tournament }: { tournament: TournamentSummary }
         ) : (
           <button
             type="button"
-            className="text-ice/40 transition hover:text-rose-400"
+            className="text-muted-foreground transition hover:text-destructive"
             onClick={() => setConfirming(true)}
             aria-label={`Delete ${tournament.name}`}
           >

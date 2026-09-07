@@ -1,23 +1,48 @@
-import type { ButtonHTMLAttributes } from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
 import { cn } from "@/lib/utils";
 
-type Variant = "gold" | "ghost" | "danger";
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-gold-dim",
+        gold: "bg-gold text-navy hover:bg-gold-dim",
+        destructive: "bg-destructive text-white hover:bg-destructive/90",
+        danger: "bg-destructive text-white hover:bg-destructive/90",
+        outline: "border border-border bg-transparent hover:bg-muted",
+        secondary: "bg-muted text-foreground hover:bg-muted/80",
+        ghost: "border border-border bg-card text-foreground hover:bg-muted",
+        link: "text-gold underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-5 py-2.5",
+        sm: "h-8 px-3 text-xs",
+        lg: "h-11 px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  },
+);
 
-export function Button({
+function Button({
   className,
-  variant = "gold",
+  variant,
+  size,
+  asChild = false,
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }) {
-  return (
-    <button
-      className={cn(
-        "inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50",
-        variant === "gold" && "bg-gold text-navy hover:bg-gold-dim",
-        variant === "ghost" && "border border-white/15 bg-white/5 text-ice hover:bg-white/10",
-        variant === "danger" && "bg-rose-500/90 text-white hover:bg-rose-400",
-        className,
-      )}
-      {...props}
-    />
-  );
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
+  }) {
+  const Comp = asChild ? Slot : "button";
+  return <Comp className={cn(buttonVariants({ variant, size, className }))} {...props} />;
 }
+
+export { Button, buttonVariants };
